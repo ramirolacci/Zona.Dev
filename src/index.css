@@ -1,0 +1,66 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    @apply bg-slate-950 text-slate-100 font-sans antialiased overflow-hidden select-none;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #0f172a;
+}
+::-webkit-scrollbar-thumb {
+  background: #334155;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+/* Custom Animations */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-4px); }
+  40%, 80% { transform: translateX(4px); }
+}
+
+.animate-shake {
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Blockly Custom Overrides */
+.blocklySvg {
+  background-color: transparent !important;
+}
+
+.blocklyToolboxDiv {
+  background-color: #1e293b !important;
+  border-right: 1px solid #334155 !important;
+}
+
+.blocklyFlyoutBackground {
+  fill: #1e293b !important;
+  fill-opacity: 0.95 !important;
+}
+
+.blocklyTreeLabel {
+  color: #f8fafc !important;
+}
+
+.blocklyHighlightedConnectionPath {
+  stroke: #f59e0b !important;
+}
