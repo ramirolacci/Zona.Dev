@@ -12,6 +12,7 @@
   "dependencies": {
     "blockly": "^13.3.0",
     "canvas-confetti": "^1.9.4",
+    "gsap": "^3.15.0",
     "howler": "^2.2.4",
     "lucide-react": "^1.47.0",
     "phaser": "^4.2.1",

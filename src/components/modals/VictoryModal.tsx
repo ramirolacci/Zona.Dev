@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useGameStore } from '../../store/useGameStore';
 import { Trophy, Star, ArrowRight, RotateCcw, Award } from 'lucide-react';
+import { GSAPModal } from '../ui/GSAPModal';
+import gsap from 'gsap';
 
 export const VictoryModal: React.FC = () => {
   const {
@@ -12,14 +14,37 @@ export const VictoryModal: React.FC = () => {
     setVictoryModalOpen
   } = useGameStore();
 
-  if (!isVictoryModalOpen) return null;
+  const starContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isVictoryModalOpen && starContainerRef.current) {
+      const starsEl = starContainerRef.current.querySelectorAll('.star-badge');
+      gsap.fromTo(
+        starsEl,
+        { scale: 0, rotation: -45, opacity: 0 },
+        {
+          scale: 1,
+          rotation: 0,
+          opacity: 1,
+          duration: 0.5,
+          stagger: 0.15,
+          delay: 0.2,
+          ease: 'back.out(2)'
+        }
+      );
+    }
+  }, [isVictoryModalOpen]);
 
   const progress = userProgress[currentLevel.id];
   const stars = progress ? progress.stars : 1;
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in">
-      <div className="bg-slate-900 border border-slate-700/80 rounded-3xl max-w-md w-full p-6 text-center shadow-2xl relative overflow-hidden">
+    <GSAPModal
+      isOpen={isVictoryModalOpen}
+      onClose={() => setVictoryModalOpen(false)}
+      maxWidthClass="max-w-md"
+    >
+      <div className="p-6 text-center relative overflow-hidden">
         {/* Glow backdrop */}
         <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-48 h-48 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none" />
 
@@ -34,13 +59,13 @@ export const VictoryModal: React.FC = () => {
         <p className="text-xs text-slate-400 mb-6">{currentLevel.title}</p>
 
         {/* Star Rating */}
-        <div className="flex items-center justify-center gap-3 mb-6">
+        <div ref={starContainerRef} className="flex items-center justify-center gap-3 mb-6">
           {[1, 2, 3].map(st => (
             <div
               key={st}
-              className={`p-3 rounded-2xl transition-all duration-500 transform ${
+              className={`star-badge p-3 rounded-2xl transition-all duration-500 transform ${
                 st <= stars
-                  ? 'bg-amber-500/20 border border-amber-500/40 scale-110'
+                  ? 'bg-amber-500/20 border border-amber-500/40 scale-110 shadow-lg shadow-amber-500/20'
                   : 'bg-slate-800/50 border border-slate-800 opacity-40'
               }`}
             >
@@ -75,7 +100,7 @@ export const VictoryModal: React.FC = () => {
               setVictoryModalOpen(false);
               resetCurrentLevel();
             }}
-            className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all active:scale-95"
+            className="flex-1 py-3 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl font-bold text-xs flex items-center justify-center gap-2 transition-all hover:scale-105 active:scale-95"
           >
             <RotateCcw size={16} />
             <span>Repetir</span>
@@ -83,13 +108,13 @@ export const VictoryModal: React.FC = () => {
 
           <button
             onClick={nextLevel}
-            className="flex-1 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 transition-all active:scale-95"
+            className="flex-1 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 transition-all hover:scale-105 active:scale-95"
           >
             <span>Siguiente Nivel</span>
             <ArrowRight size={16} />
           </button>
         </div>
       </div>
-    </div>
+    </GSAPModal>
   );
 };

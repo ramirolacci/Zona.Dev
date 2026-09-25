@@ -1,27 +1,30 @@
 import React from 'react';
 import { useGameStore } from '../../store/useGameStore';
 import { Bot, BookOpen, CheckCircle2, Play, Sparkles, X } from 'lucide-react';
+import { GSAPModal } from '../ui/GSAPModal';
 
 export const LevelIntroModal: React.FC = () => {
   const { isLevelIntroOpen, setLevelIntroOpen, currentLevel } = useGameStore();
 
-  if (!isLevelIntroOpen) return null;
-
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/85 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in">
-      <div className="bg-slate-900 border border-slate-700/80 rounded-3xl max-w-xl w-full p-6 shadow-2xl relative flex flex-col max-h-[90vh] overflow-hidden">
-        {/* Glow Effects */}
-        <div className="absolute -top-20 -left-20 w-40 h-40 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl pointer-events-none" />
+    <GSAPModal
+      isOpen={isLevelIntroOpen}
+      onClose={() => setLevelIntroOpen(false)}
+      maxWidthClass="max-w-xl"
+    >
+      {/* Glow Effects */}
+      <div className="absolute -top-20 -left-20 w-40 h-40 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl pointer-events-none" />
 
-        {/* Close Button */}
-        <button
-          onClick={() => setLevelIntroOpen(false)}
-          className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-200 bg-slate-800 rounded-xl transition-all"
-        >
-          <X size={16} />
-        </button>
+      {/* Close Button */}
+      <button
+        onClick={() => setLevelIntroOpen(false)}
+        className="absolute top-4 right-4 p-2 text-slate-400 hover:text-slate-200 bg-slate-800 rounded-xl transition-all hover:scale-105 active:scale-95"
+      >
+        <X size={16} />
+      </button>
 
+      <div className="p-6 flex flex-col h-full overflow-hidden">
         {/* Header with Cody Avatar */}
         <div className="flex items-center gap-4 pb-4 border-b border-slate-800">
           <div className="w-14 h-14 rounded-2xl bg-gradient-to-tr from-cyan-500 to-blue-600 p-0.5 shadow-lg shadow-cyan-500/20 flex items-center justify-center shrink-0">
@@ -84,13 +87,13 @@ export const LevelIntroModal: React.FC = () => {
         <div className="pt-4 border-t border-slate-800">
           <button
             onClick={() => setLevelIntroOpen(false)}
-            className="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-sm rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 transition-all active:scale-95"
+            className="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-sm rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 transition-all hover:scale-[1.02] active:scale-95"
           >
             <Play size={18} className="fill-slate-950" />
             <span>¡Entendido, Empezar Misión!</span>
           </button>
         </div>
       </div>
-    </div>
+    </GSAPModal>
   );
 };

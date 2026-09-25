@@ -1,7 +1,9 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useGameStore } from '../../store/useGameStore';
 import { LEVELS } from '../../data/levels';
 import { X, Lock, Star, CheckCircle2 } from 'lucide-react';
+import { GSAPModal } from '../ui/GSAPModal';
+import gsap from 'gsap';
 
 export const WorldMapModal: React.FC = () => {
   const {
@@ -12,11 +14,33 @@ export const WorldMapModal: React.FC = () => {
     setLevel
   } = useGameStore();
 
-  if (!isWorldMapOpen) return null;
+  const gridRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (isWorldMapOpen && gridRef.current) {
+      const cards = gridRef.current.querySelectorAll('.level-card');
+      gsap.fromTo(
+        cards,
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.35,
+          stagger: 0.05,
+          delay: 0.15,
+          ease: 'power2.out'
+        }
+      );
+    }
+  }, [isWorldMapOpen]);
 
   return (
-    <div className="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 animate-fade-in">
-      <div className="bg-slate-900 border border-slate-700/80 rounded-3xl max-w-2xl w-full p-6 shadow-2xl relative flex flex-col max-h-[85vh]">
+    <GSAPModal
+      isOpen={isWorldMapOpen}
+      onClose={() => setWorldMapOpen(false)}
+      maxWidthClass="max-w-2xl"
+    >
+      <div className="p-6 flex flex-col max-h-[85vh]">
         {/* Header */}
         <div className="flex items-center justify-between pb-4 border-b border-slate-800">
           <div>
@@ -25,14 +49,14 @@ export const WorldMapModal: React.FC = () => {
           </div>
           <button
             onClick={() => setWorldMapOpen(false)}
-            className="p-2 text-slate-400 hover:text-slate-200 bg-slate-800 rounded-xl transition-all"
+            className="p-2 text-slate-400 hover:text-slate-200 bg-slate-800 rounded-xl transition-all hover:scale-105 active:scale-95"
           >
             <X size={18} />
           </button>
         </div>
 
         {/* Level List Grid */}
-        <div className="flex-1 overflow-y-auto py-6 grid grid-cols-1 sm:grid-cols-2 gap-4 pr-1">
+        <div ref={gridRef} className="flex-1 overflow-y-auto py-6 grid grid-cols-1 sm:grid-cols-2 gap-4 pr-1">
           {LEVELS.map(level => {
             const progress = userProgress[level.id];
             const isUnlocked = level.id === 1 || !!progress;
@@ -49,11 +73,11 @@ export const WorldMapModal: React.FC = () => {
                     setWorldMapOpen(false);
                   }
                 }}
-                className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between gap-3 relative overflow-hidden ${
+                className={`level-card p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between gap-3 relative overflow-hidden ${
                   isCurrent
-                    ? 'bg-cyan-950/40 border-cyan-500/60 shadow-lg shadow-cyan-500/10'
+                    ? 'bg-cyan-950/40 border-cyan-500/60 shadow-lg shadow-cyan-500/10 scale-[1.02]'
                     : isUnlocked
-                    ? 'bg-slate-800/60 border-slate-700/60 hover:bg-slate-800 hover:border-slate-600'
+                    ? 'bg-slate-800/60 border-slate-700/60 hover:bg-slate-800 hover:border-slate-500 hover:scale-[1.02]'
                     : 'bg-slate-950/40 border-slate-800/60 opacity-50 cursor-not-allowed'
                 }`}
               >
@@ -93,6 +117,6 @@ export const WorldMapModal: React.FC = () => {
           })}
         </div>
       </div>
-    </div>
+    </GSAPModal>
   );
 };

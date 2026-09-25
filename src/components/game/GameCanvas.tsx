@@ -4,6 +4,7 @@ import type { ActionStep } from '../../core/interpreter/CodeRunner';
 import type { Direction, Position, TileType, LevelItem } from '../../types/game';
 import confetti from 'canvas-confetti';
 import { MissionChecklist } from '../ui/MissionChecklist';
+import gsap from 'gsap';
 
 // --- GRAPHICS & CANVAS RENDER HELPERS ---
 
@@ -675,7 +676,7 @@ export const GameCanvas: React.FC = () => {
   const actionsRef = useRef<ActionStep[]>([]);
   const isExecutingRef = useRef<boolean>(false);
 
-  // Reset local state whenever level changes
+  // Reset local state whenever level changes & trigger GSAP scenario transition
   useEffect(() => {
     setPlayerPos({ ...currentLevel.startPos });
     setPlayerDir(currentLevel.startDirection);
@@ -685,6 +686,15 @@ export const GameCanvas: React.FC = () => {
     actionsRef.current = [];
     isExecutingRef.current = false;
     if (animRef.current) cancelAnimationFrame(animRef.current);
+
+    // Smooth GSAP Scenario Transition
+    if (canvasRef.current) {
+      gsap.fromTo(
+        canvasRef.current,
+        { opacity: 0.2, scale: 0.96 },
+        { opacity: 1, scale: 1, duration: 0.45, ease: 'power3.out' }
+      );
+    }
   }, [currentLevel.id]);
 
   // Main Canvas Render Function
