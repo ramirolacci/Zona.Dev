@@ -31,8 +31,13 @@ const JavaScriptLogo: React.FC = () => (
 
 const DjangoLogo: React.FC = () => (
   <svg viewBox="0 0 128 128" className="w-8 h-8 shrink-0">
-    <rect width="128" height="128" rx="16" fill="#092E20" />
-    <path fill="#44B78B" d="M78 28h18v72H78V83.5C73.5 95 62 99 50 99 29 99 14 82 14 62s15-37 36-37c12 0 23.5 4 28 15.5V28zm-22.5 57c12.5 0 22.5-9.8 22.5-23s-10-23-22.5-23S33 48.8 33 62s10 23 22.5 23z"/>
+    <rect width="128" height="128" rx="20" fill="#092E20" />
+    <g transform="translate(8, 4)">
+      {/* 'd' letter in Django Emerald Green */}
+      <path fill="#44B78B" d="M54 26h12v64H54v-8.5C49.5 90 40 94 30 94 14 94 2 81 2 64s12-30 28-30c10 0 19.5 4 24 13.5V26zm-17 56c9 0 16-7 16-18s-7-18-16-18-16 7-16 18 7 18 16 18z" />
+      {/* 'j' letter in Clean White with Dot */}
+      <path fill="#FFFFFF" d="M78 44h12v35c0 12-6.5 18-18 18-4.5 0-9-1-12-2.5l2.5-9.5c2 1 5 2 8 2 5.5 0 7.5-3 7.5-9.5V44zM78 26h12v11H78V26z" />
+    </g>
   </svg>
 );
 
