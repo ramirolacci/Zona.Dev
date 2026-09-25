@@ -87,9 +87,10 @@ export const BlocklyWorkspace: React.FC = () => {
     };
   }, [activeTrack]);
 
-  // Update toolbox when level or track changes
+  // Update toolbox & clear workspace when level or track changes
   useEffect(() => {
     if (workspaceRef.current) {
+      workspaceRef.current.clear();
       const toolbox = getToolboxForLevel(currentLevel.availableBlocks);
       
       const newTheme = Blockly.Theme.defineTheme(`theme_${activeTrack}`, {
