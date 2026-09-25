@@ -59,6 +59,8 @@ export const GameCanvas: React.FC = () => {
 
     // Calculate tile size and centering offset
     const tileSize = Math.min((canvasW - 40) / gridW, (canvasH - 40) / gridH);
+    if (tileSize <= 0 || canvasW <= 0 || canvasH <= 0) return;
+
     const offsetX = (canvasW - tileSize * gridW) / 2;
     const offsetY = (canvasH - tileSize * gridH) / 2;
 
