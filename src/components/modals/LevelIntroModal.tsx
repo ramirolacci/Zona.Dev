@@ -84,10 +84,10 @@ export const LevelIntroModal: React.FC = () => {
         </div>
 
         {/* Start Button */}
-        <div className="pt-4 border-t border-slate-800">
+        <div className="pt-4 border-t border-slate-800 flex justify-center">
           <button
             onClick={() => setLevelIntroOpen(false)}
-            className="w-full py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-sm rounded-2xl flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 transition-all hover:scale-[1.02] active:scale-95"
+            className="px-8 py-3.5 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-sm rounded-2xl inline-flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 transition-all hover:scale-[1.02] active:scale-95"
           >
             <Play size={18} className="fill-slate-950" />
             <span>¡Entendido, Empezar Misión!</span>

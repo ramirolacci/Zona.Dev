@@ -29,12 +29,14 @@ export const HintModal: React.FC = () => {
           {currentLevel.hint}
         </p>
 
-        <button
-          onClick={() => setHintOpen(false)}
-          className="w-full py-3 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-bold text-xs rounded-xl transition-all hover:scale-[1.02] active:scale-95 shadow-lg shadow-amber-500/20"
-        >
-          ¡Entendido, a programar!
-        </button>
+        <div className="flex justify-center">
+          <button
+            onClick={() => setHintOpen(false)}
+            className="px-8 py-3 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-bold text-xs rounded-xl transition-all hover:scale-[1.02] active:scale-95 shadow-lg shadow-amber-500/20 inline-flex items-center justify-center gap-2"
+          >
+            <span>¡Entendido, a programar!</span>
+          </button>
+        </div>
       </div>
     </GSAPModal>
   );
