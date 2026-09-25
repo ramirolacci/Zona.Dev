@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { useGameStore } from '../../store/useGameStore';
 import { Target, CheckCircle, Circle, ChevronDown, ChevronUp } from 'lucide-react';
+import { TRACK_THEMES } from '../../utils/theme';
 
 export const MissionChecklist: React.FC = () => {
-  const { currentLevel, executionState } = useGameStore();
+  const { currentLevel, executionState, activeTrack } = useGameStore();
+  const theme = TRACK_THEMES[activeTrack] || TRACK_THEMES.python;
   const [isCollapsed, setIsCollapsed] = useState(false);
 
   const workspace = (window as any).__blocklyWorkspace;
@@ -11,14 +13,14 @@ export const MissionChecklist: React.FC = () => {
   const isSuccess = executionState === 'SUCCESS';
 
   return (
-    <div className="absolute bottom-4 left-4 z-20 max-w-xs bg-slate-900/90 backdrop-blur-md border border-slate-700/70 rounded-2xl p-3 shadow-2xl transition-all">
+    <div className={`absolute bottom-4 left-4 z-20 max-w-xs ${theme.panelBg} backdrop-blur-md border ${theme.panelBorder} rounded-2xl p-3 shadow-2xl transition-all`}>
       {/* Header */}
       <div
         onClick={() => setIsCollapsed(!isCollapsed)}
         className="flex items-center justify-between gap-2 cursor-pointer"
       >
         <div className="flex items-center gap-2">
-          <Target size={16} className="text-cyan-400" />
+          <Target size={16} className={theme.iconColor} />
           <span className="text-xs font-bold text-slate-200">Objetivos de la Misión</span>
         </div>
         <button className="text-slate-400 hover:text-slate-200">
@@ -28,7 +30,7 @@ export const MissionChecklist: React.FC = () => {
 
       {/* Objectives Checklist */}
       {!isCollapsed && (
-        <div className="mt-2.5 pt-2.5 border-t border-slate-800 space-y-1.5">
+        <div className={`mt-2.5 pt-2.5 border-t ${theme.accentBoxBorder} space-y-1.5`}>
           {currentLevel.objectives.map(obj => {
             let checked = false;
             if (obj.id === 'goal' && isSuccess) checked = true;

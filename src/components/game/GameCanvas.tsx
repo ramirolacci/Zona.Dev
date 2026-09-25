@@ -5,6 +5,7 @@ import type { Direction, Position, TileType, LevelItem } from '../../types/game'
 import confetti from 'canvas-confetti';
 import { MissionChecklist } from '../ui/MissionChecklist';
 import gsap from 'gsap';
+import { TRACK_THEMES, type TrackTheme } from '../../utils/theme';
 
 // --- GRAPHICS & CANVAS RENDER HELPERS ---
 
@@ -487,7 +488,8 @@ function drawRobotPlayer(
   px: number,
   py: number,
   tileSize: number,
-  dir: Direction
+  dir: Direction,
+  theme: TrackTheme
 ) {
   ctx.save();
 
@@ -501,10 +503,9 @@ function drawRobotPlayer(
   ctx.fill();
 
   // 2. Thruster / Hover Energy Aura
-  const pulse = (Math.sin(Date.now() / 200) + 1) / 2;
   const hoverGrad = ctx.createRadialGradient(px, py, Math.max(1, radius * 0.2), px, py, Math.max(1, radius * 1.3));
-  hoverGrad.addColorStop(0, `rgba(56, 189, 248, ${0.5 + pulse * 0.2})`);
-  hoverGrad.addColorStop(1, 'rgba(56, 189, 248, 0)');
+  hoverGrad.addColorStop(0, theme.robotAuraColor);
+  hoverGrad.addColorStop(1, 'rgba(0, 0, 0, 0)');
   ctx.fillStyle = hoverGrad;
   ctx.beginPath();
   ctx.arc(px, py, Math.max(1, radius * 1.3), 0, Math.PI * 2);
@@ -512,7 +513,7 @@ function drawRobotPlayer(
 
   // 3. Side Wheel/Ear Caps
   ctx.fillStyle = '#1E293B';
-  ctx.strokeStyle = '#38BDF8';
+  ctx.strokeStyle = theme.robotGrad[0];
   ctx.lineWidth = 2;
 
   // Left ear cap
@@ -536,9 +537,9 @@ function drawRobotPlayer(
     py,
     Math.max(1, radius)
   );
-  bodyGrad.addColorStop(0, '#60A5FA');
-  bodyGrad.addColorStop(0.4, '#3B82F6');
-  bodyGrad.addColorStop(1, '#1D4ED8');
+  bodyGrad.addColorStop(0, theme.robotGrad[0]);
+  bodyGrad.addColorStop(0.4, theme.robotGrad[1]);
+  bodyGrad.addColorStop(1, theme.robotGrad[2]);
 
   ctx.fillStyle = bodyGrad;
   ctx.beginPath();
@@ -546,7 +547,7 @@ function drawRobotPlayer(
   ctx.fill();
 
   // Metallic Rim Stroke
-  ctx.strokeStyle = '#93C5FD';
+  ctx.strokeStyle = theme.robotGrad[0];
   ctx.lineWidth = 2.5;
   ctx.stroke();
 
@@ -560,7 +561,7 @@ function drawRobotPlayer(
   ctx.stroke();
 
   // Glowing Orb on Tip
-  const orbColor = dir === 'NORTH' ? '#F59E0B' : '#38BDF8';
+  const orbColor = dir === 'NORTH' ? '#F59E0B' : theme.robotEyeColor;
   ctx.fillStyle = orbColor;
   ctx.beginPath();
   ctx.arc(px, antennaY - 3, 4.5, 0, Math.PI * 2);
@@ -617,7 +618,7 @@ function drawRobotPlayer(
   // Draw Glowing Digital LED Eyes (only visible when not facing North)
   if (dir !== 'NORTH') {
     const eyeR = radius * 0.15;
-    const eyeColor = '#38BDF8';
+    const eyeColor = theme.robotEyeColor;
 
     // Left Eye
     ctx.fillStyle = eyeColor;
@@ -653,6 +654,7 @@ export const GameCanvas: React.FC = () => {
 
   const {
     currentLevel,
+    activeTrack,
     setCurrentBlockId,
     setExecutionState,
     setSuccess,
@@ -660,6 +662,8 @@ export const GameCanvas: React.FC = () => {
     recordLevelCompletion,
     setVictoryModalOpen
   } = useGameStore();
+
+  const theme = TRACK_THEMES[activeTrack] || TRACK_THEMES.python;
 
   // Internal Animated State
   const [playerPos, setPlayerPos] = useState<Position>({ ...currentLevel.startPos });
@@ -714,8 +718,8 @@ export const GameCanvas: React.FC = () => {
     const offsetX = (canvasW - tileSize * gridW) / 2;
     const offsetY = (canvasH - tileSize * gridH) / 2;
 
-    // Clear Background
-    ctx.fillStyle = '#090D16'; // Dark Sci-Fi Canvas Background
+    // Clear Background with Track Theme Palette
+    ctx.fillStyle = theme.canvasBg;
     ctx.fillRect(0, 0, canvasW, canvasH);
 
     // Draw Board Tiles
@@ -744,7 +748,7 @@ export const GameCanvas: React.FC = () => {
     // Draw Player Robot (Cody) 🤖
     const px = offsetX + playerPos.x * tileSize + tileSize / 2;
     const py = offsetY + playerPos.y * tileSize + tileSize / 2;
-    drawRobotPlayer(ctx, px, py, tileSize, playerDir);
+    drawRobotPlayer(ctx, px, py, tileSize, playerDir, theme);
   };
 
   // Canvas Resize Listener
@@ -841,7 +845,7 @@ export const GameCanvas: React.FC = () => {
   }, [currentLevel]);
 
   return (
-    <div ref={containerRef} className="relative w-full h-full min-h-[350px] bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 shadow-2xl flex items-center justify-center">
+    <div ref={containerRef} className={`relative w-full h-full min-h-[350px] bg-slate-950 rounded-2xl overflow-hidden border ${theme.panelBorder} shadow-2xl flex items-center justify-center transition-colors duration-500`}>
       <canvas ref={canvasRef} className="w-full h-full block" />
       
       {/* Mission Checklist Overlay */}

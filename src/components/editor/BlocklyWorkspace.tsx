@@ -4,6 +4,7 @@ import { javascriptGenerator } from 'blockly/javascript';
 import { pythonGenerator } from 'blockly/python';
 import { useGameStore } from '../../store/useGameStore';
 import { initCustomBlocks, getToolboxForLevel } from '../../core/interpreter/BlocklyConfig';
+import { TRACK_THEMES } from '../../utils/theme';
 
 export const BlocklyWorkspace: React.FC = () => {
   const blocklyDivRef = useRef<HTMLDivElement | null>(null);
@@ -11,10 +12,13 @@ export const BlocklyWorkspace: React.FC = () => {
 
   const {
     currentLevel,
+    activeTrack,
     currentBlockId,
     setGeneratedCode,
     executionState
   } = useGameStore();
+
+  const theme = TRACK_THEMES[activeTrack] || TRACK_THEMES.python;
 
   useEffect(() => {
     initCustomBlocks();
@@ -30,7 +34,7 @@ export const BlocklyWorkspace: React.FC = () => {
         grid: {
           spacing: 20,
           length: 3,
-          colour: '#334155',
+          colour: 'rgba(255, 255, 255, 0.08)',
           snap: true,
         },
         zoom: {
@@ -41,15 +45,15 @@ export const BlocklyWorkspace: React.FC = () => {
           minScale: 0.7,
           scaleSpeed: 1.2,
         },
-        theme: Blockly.Theme.defineTheme('customDark', {
-          name: 'customDark',
+        theme: Blockly.Theme.defineTheme(`theme_${activeTrack}`, {
+          name: `theme_${activeTrack}`,
           base: Blockly.Themes.Classic,
           componentStyles: {
-            workspaceBackgroundColour: '#0F172A', // Slate 900
-            toolboxBackgroundColour: '#1E293B', // Slate 800
-            flyoutBackgroundColour: '#1E293B',
-            flyoutOpacity: 0.95,
-            scrollbarColour: '#475569',
+            workspaceBackgroundColour: theme.workspaceBgHex,
+            toolboxBackgroundColour: theme.toolboxBgHex,
+            flyoutBackgroundColour: theme.toolboxBgHex,
+            flyoutOpacity: 1,
+            scrollbarColour: 'rgba(255, 255, 255, 0.2)',
             scrollbarOpacity: 0.6,
           }
         })
@@ -81,20 +85,33 @@ export const BlocklyWorkspace: React.FC = () => {
         workspaceRef.current = null;
       }
     };
-  }, []);
+  }, [activeTrack]);
 
-  // Update toolbox when level changes
+  // Update toolbox when level or track changes
   useEffect(() => {
     if (workspaceRef.current) {
       const toolbox = getToolboxForLevel(currentLevel.availableBlocks);
+      
+      const newTheme = Blockly.Theme.defineTheme(`theme_${activeTrack}`, {
+        name: `theme_${activeTrack}`,
+        base: Blockly.Themes.Classic,
+        componentStyles: {
+          workspaceBackgroundColour: theme.workspaceBgHex,
+          toolboxBackgroundColour: theme.toolboxBgHex,
+          flyoutBackgroundColour: theme.toolboxBgHex,
+          flyoutOpacity: 1,
+          scrollbarColour: 'rgba(255, 255, 255, 0.2)',
+          scrollbarOpacity: 0.6,
+        }
+      });
+      workspaceRef.current.setTheme(newTheme);
       workspaceRef.current.updateToolbox(toolbox);
-      workspaceRef.current.clear();
       
       const jsCode = javascriptGenerator.workspaceToCode(workspaceRef.current);
       const pyCode = pythonGenerator.workspaceToCode(workspaceRef.current);
       setGeneratedCode({ javascript: jsCode, python: pyCode });
     }
-  }, [currentLevel.id]);
+  }, [currentLevel.id, activeTrack]);
 
   // Handle Block Execution Highlight
   useEffect(() => {
@@ -115,14 +132,17 @@ export const BlocklyWorkspace: React.FC = () => {
   }, [executionState]);
 
   return (
-    <div className="relative w-full h-full min-h-[350px] bg-slate-900 rounded-2xl overflow-hidden border border-slate-800 shadow-2xl flex flex-col">
-      <div className="px-4 py-2.5 bg-slate-800/80 backdrop-blur-md border-b border-slate-700/60 flex items-center justify-between">
+    <div
+      className={`relative w-full h-full min-h-[350px] ${theme.panelBg} rounded-2xl overflow-hidden border ${theme.panelBorder} shadow-2xl transition-colors duration-500 flex flex-col`}
+      style={{ '--blockly-toolbox-bg': theme.toolboxBgHex } as React.CSSProperties}
+    >
+      <div className={`px-4 py-2.5 ${theme.panelHeaderBg} backdrop-blur-md border-b ${theme.accentBoxBorder} flex items-center justify-between`}>
         <span className="text-xs font-bold uppercase tracking-wider text-slate-300 flex items-center gap-2">
-          <span className="w-2 h-2 rounded-full bg-emerald-400"></span>
+          <span className={`w-2.5 h-2.5 rounded-full ${theme.badgeBg} border ${theme.badgeBorder}`}></span>
           Área de Programación por Bloques
         </span>
         <span className="text-xs text-slate-400">
-          Bloques sugeridos: <strong className="text-cyan-400">{currentLevel.maxBlocks}</strong>
+          Bloques sugeridos: <strong className={theme.badgeText}>{currentLevel.maxBlocks}</strong>
         </span>
       </div>
       <div ref={blocklyDivRef} className="w-full flex-1" />

@@ -2,9 +2,11 @@ import React from 'react';
 import { useGameStore } from '../../store/useGameStore';
 import { Lightbulb, X } from 'lucide-react';
 import { GSAPModal } from '../ui/GSAPModal';
+import { TRACK_THEMES } from '../../utils/theme';
 
 export const HintModal: React.FC = () => {
-  const { isHintOpen, setHintOpen, currentLevel } = useGameStore();
+  const { isHintOpen, setHintOpen, currentLevel, activeTrack } = useGameStore();
+  const theme = TRACK_THEMES[activeTrack] || TRACK_THEMES.python;
 
   return (
     <GSAPModal
@@ -20,7 +22,7 @@ export const HintModal: React.FC = () => {
           <X size={16} />
         </button>
 
-        <div className="w-16 h-16 mx-auto mb-4 rounded-2xl bg-amber-500/20 border border-amber-500/40 flex items-center justify-center text-amber-400 shadow-lg shadow-amber-500/10 animate-bounce">
+        <div className={`w-16 h-16 mx-auto mb-4 rounded-2xl ${theme.accentBoxBg} border ${theme.accentBoxBorder} flex items-center justify-center ${theme.iconColor} animate-bounce`}>
           <Lightbulb size={32} />
         </div>
 
@@ -32,7 +34,7 @@ export const HintModal: React.FC = () => {
         <div className="flex justify-center">
           <button
             onClick={() => setHintOpen(false)}
-            className="px-8 py-3 bg-gradient-to-r from-amber-500 to-yellow-500 hover:from-amber-400 hover:to-yellow-400 text-slate-950 font-bold text-xs rounded-xl transition-all hover:scale-[1.02] active:scale-95 shadow-lg shadow-amber-500/20 inline-flex items-center justify-center gap-2"
+            className={`px-8 py-3 bg-gradient-to-r ${theme.buttonGrad} rounded-xl transition-all hover:scale-[1.02] active:scale-95 shadow-lg flex items-center justify-center gap-2`}
           >
             <span>¡Entendido, a programar!</span>
           </button>

@@ -3,6 +3,7 @@ import { useGameStore } from '../../store/useGameStore';
 import { LEVELS } from '../../data/levels';
 import { X, Lock, Star, CheckCircle2 } from 'lucide-react';
 import { GSAPModal } from '../ui/GSAPModal';
+import { TRACK_THEMES } from '../../utils/theme';
 import gsap from 'gsap';
 
 export const WorldMapModal: React.FC = () => {
@@ -11,9 +12,11 @@ export const WorldMapModal: React.FC = () => {
     setWorldMapOpen,
     userProgress,
     currentLevelId,
-    setLevel
+    setLevel,
+    activeTrack
   } = useGameStore();
 
+  const theme = TRACK_THEMES[activeTrack] || TRACK_THEMES.python;
   const gridRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -75,7 +78,7 @@ export const WorldMapModal: React.FC = () => {
                 }}
                 className={`level-card p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between gap-3 relative overflow-hidden ${
                   isCurrent
-                    ? 'bg-cyan-950/40 border-cyan-500/60 shadow-lg shadow-cyan-500/10 scale-[1.02]'
+                    ? `${theme.accentBoxBg} border ${theme.accentBoxBorder} shadow-lg scale-[1.02]`
                     : isUnlocked
                     ? 'bg-slate-800/60 border-slate-700/60 hover:bg-slate-800 hover:border-slate-500 hover:scale-[1.02]'
                     : 'bg-slate-950/40 border-slate-800/60 opacity-50 cursor-not-allowed'
@@ -83,7 +86,7 @@ export const WorldMapModal: React.FC = () => {
               >
                 <div className="flex items-start justify-between">
                   <div>
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-cyan-400">
+                    <span className={`text-[10px] font-bold uppercase tracking-wider ${theme.iconColor}`}>
                       Mundo {level.world} • {level.conceptName}
                     </span>
                     <h3 className="text-sm font-bold text-slate-100">{level.title}</h3>

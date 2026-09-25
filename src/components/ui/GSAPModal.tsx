@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useGameStore } from '../../store/useGameStore';
+import { TRACK_THEMES } from '../../utils/theme';
 import gsap from 'gsap';
 
 interface GSAPModalProps {
@@ -14,6 +16,9 @@ export const GSAPModal: React.FC<GSAPModalProps> = ({
   children,
   maxWidthClass = 'max-w-xl'
 }) => {
+  const { activeTrack } = useGameStore();
+  const theme = TRACK_THEMES[activeTrack] || TRACK_THEMES.python;
+
   const [renderModal, setRenderModal] = useState(isOpen);
   const backdropRef = useRef<HTMLDivElement>(null);
   const modalBoxRef = useRef<HTMLDivElement>(null);
@@ -84,7 +89,7 @@ export const GSAPModal: React.FC<GSAPModalProps> = ({
     >
       <div
         ref={modalBoxRef}
-        className={`bg-slate-900 border border-slate-700/80 rounded-3xl w-full ${maxWidthClass} shadow-2xl relative flex flex-col max-h-[90vh] overflow-hidden`}
+        className={`${theme.modalBg} border ${theme.modalBorder} rounded-3xl w-full ${maxWidthClass} shadow-2xl relative flex flex-col max-h-[90vh] overflow-hidden transition-colors duration-300`}
       >
         {children}
       </div>

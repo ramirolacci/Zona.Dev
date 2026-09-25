@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useGameStore } from '../../store/useGameStore';
 import { Trophy, Star, ArrowRight, RotateCcw, Award } from 'lucide-react';
 import { GSAPModal } from '../ui/GSAPModal';
+import { TRACK_THEMES } from '../../utils/theme';
 import gsap from 'gsap';
 
 export const VictoryModal: React.FC = () => {
@@ -11,9 +12,11 @@ export const VictoryModal: React.FC = () => {
     userProgress,
     nextLevel,
     resetCurrentLevel,
-    setVictoryModalOpen
+    setVictoryModalOpen,
+    activeTrack
   } = useGameStore();
 
+  const theme = TRACK_THEMES[activeTrack] || TRACK_THEMES.python;
   const starContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -45,13 +48,10 @@ export const VictoryModal: React.FC = () => {
       maxWidthClass="max-w-md"
     >
       <div className="p-6 text-center relative overflow-hidden">
-        {/* Glow backdrop */}
-        <div className="absolute -top-24 left-1/2 -translate-x-1/2 w-48 h-48 bg-cyan-500/20 rounded-full blur-3xl pointer-events-none" />
-
         {/* Trophy Header */}
-        <div className="w-20 h-20 mx-auto mb-4 rounded-3xl bg-gradient-to-tr from-amber-400 to-yellow-500 p-0.5 shadow-lg shadow-amber-500/30 flex items-center justify-center">
+        <div className={`w-20 h-20 mx-auto mb-4 rounded-3xl bg-gradient-to-tr ${theme.buttonGrad} p-0.5 shadow-lg flex items-center justify-center`}>
           <div className="w-full h-full bg-slate-950 rounded-[22px] flex items-center justify-center">
-            <Trophy className="w-10 h-10 text-amber-400 animate-bounce" />
+            <Trophy className={`w-10 h-10 ${theme.iconColor} animate-bounce`} />
           </div>
         </div>
 
@@ -65,13 +65,13 @@ export const VictoryModal: React.FC = () => {
               key={st}
               className={`star-badge p-3 rounded-2xl transition-all duration-500 transform ${
                 st <= stars
-                  ? 'bg-amber-500/20 border border-amber-500/40 scale-110 shadow-lg shadow-amber-500/20'
+                  ? `${theme.accentBoxBg} border ${theme.accentBoxBorder} scale-110 shadow-lg`
                   : 'bg-slate-800/50 border border-slate-800 opacity-40'
               }`}
             >
               <Star
                 size={32}
-                className={st <= stars ? 'text-amber-400 fill-amber-400' : 'text-slate-600'}
+                className={st <= stars ? `${theme.iconColor} fill-current` : 'text-slate-600'}
               />
             </div>
           ))}
@@ -81,9 +81,9 @@ export const VictoryModal: React.FC = () => {
         <div className="bg-slate-950/60 rounded-2xl p-4 border border-slate-800 mb-6 text-left space-y-2 text-xs">
           <div className="flex items-center justify-between text-slate-300">
             <span className="flex items-center gap-1.5 font-medium text-slate-400">
-              <Award size={14} className="text-cyan-400" /> Concepto Aprendido:
+              <Award size={14} className={theme.iconColor} /> Concepto Aprendido:
             </span>
-            <span className="font-bold text-cyan-400">{currentLevel.conceptName}</span>
+            <span className={`font-bold ${theme.iconColor}`}>{currentLevel.conceptName}</span>
           </div>
           <div className="flex items-center justify-between text-slate-300">
             <span className="font-medium text-slate-400">Meta de bloques:</span>
@@ -108,7 +108,7 @@ export const VictoryModal: React.FC = () => {
 
           <button
             onClick={nextLevel}
-            className="flex-1 py-3 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-slate-950 font-bold text-xs rounded-xl flex items-center justify-center gap-2 shadow-lg shadow-cyan-500/20 transition-all hover:scale-105 active:scale-95"
+            className={`flex-1 py-3 bg-gradient-to-r ${theme.buttonGrad} text-xs rounded-xl flex items-center justify-center gap-2 shadow-lg transition-all hover:scale-105 active:scale-95`}
           >
             <span>Siguiente Nivel</span>
             <ArrowRight size={16} />

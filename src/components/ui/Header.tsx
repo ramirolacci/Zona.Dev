@@ -20,7 +20,7 @@ export const Header: React.FC = () => {
   const stars = progress ? progress.stars : 0;
 
   const trackLabels: Record<string, { label: string; color: string }> = {
-    python: { label: '🐍 Python', color: 'text-emerald-400 bg-emerald-500/10 border-emerald-500/30' },
+    python: { label: '🐍 Python', color: 'text-sky-400 bg-sky-500/10 border-sky-500/30' },
     javascript: { label: '⚡ JavaScript', color: 'text-amber-400 bg-amber-500/10 border-amber-500/30' },
     django: { label: '🎸 Django', color: 'text-green-400 bg-green-500/10 border-green-500/30' },
     react: { label: '⚛️ React', color: 'text-cyan-400 bg-cyan-500/10 border-cyan-500/30' },

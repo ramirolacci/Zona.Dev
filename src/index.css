@@ -48,13 +48,13 @@
 }
 
 .blocklyToolboxDiv {
-  background-color: #1e293b !important;
-  border-right: 1px solid #334155 !important;
+  background-color: var(--blockly-toolbox-bg, #141208) !important;
+  border-right: 1px solid var(--blockly-border, rgba(255, 255, 255, 0.1)) !important;
 }
 
 .blocklyFlyoutBackground {
-  fill: #1e293b !important;
-  fill-opacity: 0.95 !important;
+  fill: var(--blockly-toolbox-bg, #141208) !important;
+  fill-opacity: 1 !important;
 }
 
 .blocklyTreeLabel {

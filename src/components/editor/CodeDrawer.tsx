@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useGameStore } from '../../store/useGameStore';
 import type { TrackType } from '../../types/game';
 import { Code2, Copy, Check, Terminal } from 'lucide-react';
+import { TRACK_THEMES } from '../../utils/theme';
 
 const formatCodeForTrack = (track: TrackType, rawPy: string, rawJs: string): string => {
   if (track === 'python') {
@@ -38,7 +39,7 @@ export const CodeDrawer: React.FC = () => {
   };
 
   const trackBadgeInfo: Record<TrackType, { name: string; color: string }> = {
-    python: { name: '🐍 Módulo Python', color: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/40' },
+    python: { name: '🐍 Módulo Python', color: 'bg-sky-500/20 text-sky-400 border-sky-500/40' },
     javascript: { name: '⚡ Módulo JavaScript', color: 'bg-amber-500/20 text-amber-400 border-amber-500/40' },
     django: { name: '🎸 Módulo Django (Backend)', color: 'bg-green-500/20 text-green-400 border-green-500/40' },
     react: { name: '⚛️ Módulo React (Frontend)', color: 'bg-cyan-500/20 text-cyan-400 border-cyan-500/40' },
@@ -46,16 +47,18 @@ export const CodeDrawer: React.FC = () => {
 
   const currentBadge = trackBadgeInfo[activeTrack] || trackBadgeInfo.python;
 
+  const theme = TRACK_THEMES[activeTrack] || TRACK_THEMES.python;
+
   return (
-    <div className="w-full bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden flex flex-col h-full min-h-[200px] shadow-xl">
+    <div className={`w-full ${theme.panelBg} border ${theme.panelBorder} rounded-2xl overflow-hidden flex flex-col h-full min-h-[200px] shadow-xl transition-colors duration-500`}>
       {/* Header Tabs */}
-      <div className="px-4 py-2 bg-slate-800/90 border-b border-slate-700/60 flex items-center justify-between">
+      <div className={`px-4 py-2 ${theme.panelHeaderBg} border-b ${theme.accentBoxBorder} flex items-center justify-between`}>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setActiveTab('code')}
             className={`px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
               activeTab === 'code'
-                ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500/40'
+                ? `${theme.badgeBg} ${theme.badgeText} border ${theme.badgeBorder}`
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -66,7 +69,7 @@ export const CodeDrawer: React.FC = () => {
             onClick={() => setActiveTab('console')}
             className={`px-3 py-1 rounded-lg text-xs font-semibold flex items-center gap-1.5 transition-all ${
               activeTab === 'console'
-                ? 'bg-amber-500/20 text-amber-400 border border-amber-500/40'
+                ? `${theme.badgeBg} ${theme.badgeText} border ${theme.badgeBorder}`
                 : 'text-slate-400 hover:text-slate-200'
             }`}
           >
@@ -92,10 +95,10 @@ export const CodeDrawer: React.FC = () => {
       </div>
 
       {/* Content Area */}
-      <div className="flex-1 p-4 overflow-auto font-mono text-xs leading-relaxed bg-slate-950 text-slate-200">
+      <div className={`flex-1 p-4 overflow-auto font-mono text-xs leading-relaxed ${theme.panelBg} text-slate-200`}>
         {activeTab === 'code' ? (
           formattedCode ? (
-            <pre className="whitespace-pre-wrap text-emerald-400">{formattedCode}</pre>
+            <pre className={`whitespace-pre-wrap ${theme.badgeText}`}>{formattedCode}</pre>
           ) : (
             <span className="text-slate-500 italic">
               // Conecta bloques en el panel superior para ver el código en tiempo real...
@@ -107,7 +110,7 @@ export const CodeDrawer: React.FC = () => {
               <span className="text-slate-500 italic">&gt; Consola lista. Presiona &apos;Ejecutar&apos; para ver registros.</span>
             ) : (
               codeOutput.map((log, idx) => (
-                <div key={idx} className="text-cyan-300 font-mono flex items-start gap-2">
+                <div key={idx} className={`${theme.badgeText} font-mono flex items-start gap-2`}>
                   <span className="text-slate-600 font-bold">&gt;</span>
                   <span>{log}</span>
                 </div>

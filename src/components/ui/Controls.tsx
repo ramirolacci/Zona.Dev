@@ -2,10 +2,12 @@ import React from 'react';
 import { useGameStore } from '../../store/useGameStore';
 import { CodeRunner } from '../../core/interpreter/CodeRunner';
 import { Play, RotateCcw, FastForward, AlertCircle } from 'lucide-react';
+import { TRACK_THEMES } from '../../utils/theme';
 
 export const Controls: React.FC = () => {
   const {
     currentLevel,
+    activeTrack,
     executionState,
     speed,
     setSpeed,
@@ -16,6 +18,8 @@ export const Controls: React.FC = () => {
     errorMessage,
     resetCurrentLevel
   } = useGameStore();
+
+  const theme = TRACK_THEMES[activeTrack] || TRACK_THEMES.python;
 
   const handleRun = async () => {
     if (executionState === 'RUNNING') return;
@@ -70,7 +74,7 @@ export const Controls: React.FC = () => {
   };
 
   return (
-    <div className="w-full bg-slate-900/90 border border-slate-800 p-4 rounded-2xl flex flex-col gap-3 shadow-2xl">
+    <div className={`w-full ${theme.panelBg} border ${theme.panelBorder} p-4 rounded-2xl flex flex-col gap-3 shadow-2xl transition-colors duration-500`}>
       {/* Action Buttons Row */}
       <div className="flex items-center justify-between gap-3 w-full flex-wrap">
         {/* Play Button */}
@@ -80,7 +84,7 @@ export const Controls: React.FC = () => {
           className={`px-6 py-2.5 rounded-xl font-bold text-sm flex items-center justify-center gap-2 shadow-lg transition-all active:scale-95 flex-1 sm:flex-none ${
             executionState === 'RUNNING'
               ? 'bg-slate-700 text-slate-400 cursor-not-allowed opacity-60'
-              : 'bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-slate-950 shadow-emerald-500/20'
+              : `bg-gradient-to-r ${theme.buttonGrad}`
           }`}
         >
           <Play size={18} className="fill-slate-950" />

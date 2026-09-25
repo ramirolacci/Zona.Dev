@@ -10,9 +10,11 @@ import { VictoryModal } from './components/modals/VictoryModal';
 import { WorldMapModal } from './components/modals/WorldMapModal';
 import { HintModal } from './components/modals/HintModal';
 import { LevelIntroModal } from './components/modals/LevelIntroModal';
+import { TRACK_THEMES } from './utils/theme';
 
 export const App: React.FC = () => {
-  const { currentView } = useGameStore();
+  const { currentView, activeTrack } = useGameStore();
+  const theme = TRACK_THEMES[activeTrack] || TRACK_THEMES.python;
 
   return (
     <div className="flex flex-col h-screen w-screen bg-slate-950 text-slate-100 overflow-hidden font-sans">
@@ -23,7 +25,10 @@ export const App: React.FC = () => {
       {currentView === 'home' ? (
         <HomePanel />
       ) : (
-        <main className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 p-4 overflow-hidden min-h-0">
+        <main
+          className="flex-1 grid grid-cols-1 lg:grid-cols-12 gap-4 p-4 overflow-hidden min-h-0 transition-colors duration-500"
+          style={{ backgroundColor: theme.canvasBg }}
+        >
           {/* Left Column: Game Canvas & Execution Controls */}
           <section className="lg:col-span-5 flex flex-col gap-3 h-full min-h-0">
             <div className="flex-1 min-h-[300px]">
