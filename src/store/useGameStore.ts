@@ -1,10 +1,14 @@
 import { create } from 'zustand';
-import type { LevelConfig, UserLevelProgress } from '../types/game';
+import type { LevelConfig, UserLevelProgress, TrackType } from '../types/game';
 import { LEVELS } from '../data/levels';
 
 export type ExecutionState = 'IDLE' | 'RUNNING' | 'PAUSED' | 'SUCCESS' | 'FAILED';
 
 interface GameState {
+  // Navigation & Track Views
+  currentView: 'home' | 'game';
+  activeTrack: TrackType;
+
   // Current active level
   currentLevelId: number;
   currentLevel: LevelConfig;
@@ -32,6 +36,8 @@ interface GameState {
   isLevelIntroOpen: boolean;
   
   // Actions
+  setCurrentView: (view: 'home' | 'game') => void;
+  setActiveTrack: (track: TrackType) => void;
   setLevel: (levelId: number) => void;
   nextLevel: () => void;
   setExecutionState: (state: ExecutionState) => void;
@@ -69,6 +75,9 @@ const loadProgressFromStorage = (): Record<number, UserLevelProgress> => {
 };
 
 export const useGameStore = create<GameState>((set, get) => ({
+  currentView: 'home',
+  activeTrack: 'python',
+
   currentLevelId: 1,
   currentLevel: LEVELS[0],
   
@@ -88,7 +97,18 @@ export const useGameStore = create<GameState>((set, get) => ({
   isWorldMapOpen: false,
   isVictoryModalOpen: false,
   isHintOpen: false,
-  isLevelIntroOpen: true, // Show intro on first load
+  isLevelIntroOpen: true,
+  
+  setCurrentView: (currentView) => set({ currentView }),
+  setActiveTrack: (track) => {
+    const lang = (track === 'javascript' || track === 'react') ? 'javascript' : 'python';
+    set({
+      activeTrack: track,
+      currentView: 'game',
+      selectedLanguage: lang,
+      isLevelIntroOpen: true
+    });
+  },
   
   setLevel: (levelId: number) => {
     const target = LEVELS.find(l => l.id === levelId) || LEVELS[0];

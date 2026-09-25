@@ -1,4 +1,5 @@
 export type Direction = 'NORTH' | 'EAST' | 'SOUTH' | 'WEST';
+export type TrackType = 'python' | 'javascript' | 'django' | 'react';
 
 export interface Position {
   x: number;
