@@ -1,6 +1,6 @@
 import React from 'react';
 import { useGameStore } from '../../store/useGameStore';
-import { Bot, BookOpen, CheckCircle2, Play, Sparkles, X } from 'lucide-react';
+import { Bot, BookOpen, CheckCircle2, Play, X } from 'lucide-react';
 import { GSAPModal } from '../ui/GSAPModal';
 
 export const LevelIntroModal: React.FC = () => {
@@ -36,9 +36,6 @@ export const LevelIntroModal: React.FC = () => {
             <div className="flex items-center gap-2">
               <span className="text-[10px] font-extrabold uppercase tracking-wider text-cyan-400 bg-cyan-500/10 px-2 py-0.5 rounded border border-cyan-500/30">
                 {currentLevel.worldTitle}
-              </span>
-              <span className="text-[10px] font-bold text-amber-400 bg-amber-500/10 px-2 py-0.5 rounded border border-amber-500/30 flex items-center gap-1">
-                <Sparkles size={10} /> {currentLevel.conceptName}
               </span>
             </div>
             <h2 className="text-xl font-black text-slate-100 mt-1">{currentLevel.title}</h2>

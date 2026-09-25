@@ -653,7 +653,6 @@ export const GameCanvas: React.FC = () => {
 
   const {
     currentLevel,
-    speed,
     setCurrentBlockId,
     setExecutionState,
     setSuccess,
@@ -845,16 +844,6 @@ export const GameCanvas: React.FC = () => {
     <div ref={containerRef} className="relative w-full h-full min-h-[350px] bg-slate-950 rounded-2xl overflow-hidden border border-slate-800 shadow-2xl flex items-center justify-center">
       <canvas ref={canvasRef} className="w-full h-full block" />
       
-      {/* Concept Badge */}
-      <div className="absolute top-4 left-4 bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-700/50 text-xs font-semibold text-cyan-400 flex items-center gap-2">
-        <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-        <span>{currentLevel.conceptName}</span>
-      </div>
-
-      {/* Speed Indicator */}
-      <div className="absolute top-4 right-4 bg-slate-900/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-700/50 text-xs font-medium text-slate-300">
-        Velocidad: <span className="text-amber-400 font-bold">{speed}x</span>
-      </div>
       {/* Mission Checklist Overlay */}
       <MissionChecklist />
     </div>
