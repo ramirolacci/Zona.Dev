@@ -12,7 +12,7 @@ export const PYTHON_LEVELS: LevelConfig[] = [
     learningObjective: "Una SECUENCIA es una lista de órdenes que la computadora ejecuta en orden exacto, una tras otra de arriba hacia abajo.",
     stepByStepGuide: [
       "1. Arrastra el bloque '🚀 Mover adelante' al espacio de trabajo.",
-      "2. Conecta 3 bloques de 'Mover adelante' formando una cadena vertical.",
+      "2. Conecta 3 bloques de 'Mover adelante' forming una cadena vertical.",
       "3. Presiona el botón verde 'Ejecutar Programa' para ver a Cody avanzar."
     ],
     objectives: [
@@ -1110,13 +1110,384 @@ export const DJANGO_LEVELS: LevelConfig[] = [
   }
 ];
 
+export const REACT_LEVELS: LevelConfig[] = [
+  {
+    id: 301,
+    world: 1,
+    worldTitle: "Mundo 1: Componentes React & JSX",
+    title: "1. El Componente Raíz (<App />)",
+    conceptName: "Componentes JSX y Árbol DOM",
+    description: "Entrega el componente raíz <App /> guiando a Cody hasta el contenedor index.html.",
+    story: "¡Bienvenido a la Arquitectura Reactiva! Para montar la interfaz de usuario en el navegador, Cody debe llevar el componente raíz <App /> al nodo <div id='root'>.",
+    learningObjective: "En React, la UI se construye componiendo bloques de código reutilizables llamados Componentes JSX.",
+    stepByStepGuide: [
+      "1. Arrastra 4 bloques '🚀 Mover adelante' al espacio de trabajo.",
+      "2. Conéctalos formando una cadena vertical de ejecución.",
+      "3. Presiona 'Ejecutar Programa' para renderizar la UI en pantalla."
+    ],
+    objectives: [
+      { id: 'goal', label: 'Montar el componente raíz en index.html' },
+      { id: 'blocks', label: 'Usar máximo 5 bloques (para 3 ⭐)' }
+    ],
+    gridSize: { width: 7, height: 5 },
+    startPos: { x: 1, y: 2 },
+    startDirection: 'EAST',
+    goalPos: { x: 5, y: 2 },
+    map: [
+      ['WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL'],
+      ['WALL', 'WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'WALL', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'GOAL', 'WALL'],
+      ['WALL', 'WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'WALL', 'WALL'],
+      ['WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL']
+    ],
+    maxBlocks: 5,
+    availableBlocks: ['move_forward'],
+    hint: "Coloca cuatro bloques '🚀 Mover adelante' en orden vertical."
+  },
+  {
+    id: 302,
+    world: 1,
+    worldTitle: "Mundo 1: Componentes React & JSX",
+    title: "2. Pasando Propiedades (Props)",
+    conceptName: "Props & Reusabilidad",
+    description: "Pasa las propiedades props={user} desde el componente Padre hacia el componente Hijo.",
+    story: "¡Transmisión de datos unidireccional! Cody debe transportar las propiedades props={user} desde el componente superior hasta el componente <ProfileCard />.",
+    learningObjective: "Las Props son la forma en que los componentes padres pasan datos a sus componentes hijos en React.",
+    stepByStepGuide: [
+      "1. Avanza 3 casillas hasta la intersección JSX.",
+      "2. Gira a la derecha para descender hacia el componente Hijo.",
+      "3. Avanza 2 casillas para inyectar las props."
+    ],
+    objectives: [
+      { id: 'goal', label: 'Entregar props al componente <ProfileCard />' },
+      { id: 'blocks', label: 'Usar máximo 7 bloques' }
+    ],
+    gridSize: { width: 7, height: 7 },
+    startPos: { x: 1, y: 2 },
+    startDirection: 'EAST',
+    goalPos: { x: 4, y: 4 },
+    map: [
+      ['WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'WALL'],
+      ['WALL', 'WALL', 'WALL', 'WALL', 'EMPTY', 'WALL', 'WALL'],
+      ['WALL', 'WALL', 'WALL', 'WALL', 'GOAL', 'WALL', 'WALL'],
+      ['WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL'],
+      ['WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL']
+    ],
+    maxBlocks: 7,
+    availableBlocks: ['move_forward', 'turn_left', 'turn_right'],
+    hint: "Avanza 3 veces hasta la casilla (4,2), gira a la derecha y avanza 2 veces más."
+  },
+  {
+    id: 303,
+    world: 1,
+    worldTitle: "Mundo 1: Componentes React & JSX",
+    title: "3. Reconciliación del Virtual DOM",
+    conceptName: "Virtual DOM & Diffing Algorithm",
+    description: "Se ha detectado un cambio de estado. ¡Construye un parche en el Virtual DOM para sincronizar el navegador!",
+    story: "¡Desfase de UI! El estado cambió pero el árbol DOM real está desactualizado. Cody debe ejecutar el algoritmo de Diffing y reparar la brecha del Virtual DOM.",
+    learningObjective: "El Virtual DOM compara el árbol previo con el nuevo y actualiza únicamente los nodos del DOM real que hayan cambiado.",
+    stepByStepGuide: [
+      "1. Avanza 2 pasos hasta situarte frente a la grieta del Virtual DOM.",
+      "2. Ejecuta '🌉 Construir Puente' para aplicar la sincronización de React.",
+      "3. Avanza 3 pasos más para renderizar el resultado final."
+    ],
+    objectives: [
+      { id: 'bridge', label: 'Aplicar el parche de reconciliación en el Virtual DOM' },
+      { id: 'goal', label: 'Sincronizar la UI en el DOM real' },
+      { id: 'blocks', label: 'Usar máximo 7 bloques' }
+    ],
+    gridSize: { width: 8, height: 5 },
+    startPos: { x: 1, y: 2 },
+    startDirection: 'EAST',
+    goalPos: { x: 6, y: 2 },
+    map: [
+      ['WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'RIVER', 'EMPTY', 'EMPTY', 'EMPTY', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'RIVER', 'EMPTY', 'EMPTY', 'GOAL', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'RIVER', 'EMPTY', 'EMPTY', 'EMPTY', 'WALL'],
+      ['WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL']
+    ],
+    maxBlocks: 7,
+    availableBlocks: ['move_forward', 'build_bridge'],
+    hint: "Avanza 2 casillas, construye el puente y avanza 3 casillas hasta la meta."
+  },
+  {
+    id: 304,
+    world: 1,
+    worldTitle: "Mundo 1: Componentes React & JSX",
+    title: "4. Estado Reactivo (useState)",
+    conceptName: "State Management & Reactivity",
+    description: "Recolecta los 2 estados de la aplicación (count, setCount) antes de re-renderizar la UI.",
+    story: "Para hacer que un componente sea interactivo, necesitas declarar su Estado. Recolecta los 2 valores del Hook useState (cristales) en la memoria del componente.",
+    learningObjective: "useState le permite a los componentes de React recordar datos entre renderizados y disparar una actualización visual cuando cambian.",
+    stepByStepGuide: [
+      "1. Avanza 2 casillas y recolecta el estado actual count.",
+      "2. Navega al segundo nodo y recolecta la función actualizadora setCount.",
+      "3. Ejecuta el re-renderizado en la meta."
+    ],
+    objectives: [
+      { id: 'collect_state', label: 'Recolectar los 2 valores de useState 💎' },
+      { id: 'goal', label: 'Disparar el re-renderizado en la meta' },
+      { id: 'blocks', label: 'Usar máximo 11 bloques' }
+    ],
+    gridSize: { width: 7, height: 7 },
+    startPos: { x: 1, y: 5 },
+    startDirection: 'NORTH',
+    goalPos: { x: 5, y: 1 },
+    map: [
+      ['WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'GOAL', 'WALL'],
+      ['WALL', 'EMPTY', 'WALL', 'WALL', 'WALL', 'EMPTY', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'WALL'],
+      ['WALL', 'EMPTY', 'WALL', 'WALL', 'WALL', 'EMPTY', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'WALL'],
+      ['WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL']
+    ],
+    items: [
+      { id: 'state1', x: 1, y: 3, type: 'CRYSTAL' },
+      { id: 'state2', x: 5, y: 3, type: 'CRYSTAL' }
+    ],
+    maxBlocks: 11,
+    availableBlocks: ['move_forward', 'turn_left', 'turn_right', 'collect', 'repeat_times'],
+    hint: "Avanza hasta (1,3), recoge el cristal 1, gira al Este hasta (5,3), recoge el cristal 2 y sube a la meta (5,1)."
+  },
+  {
+    id: 305,
+    world: 2,
+    worldTitle: "Mundo 2: Estado Reactivo & Listas",
+    title: "5. Renderizado de Listas (.map())",
+    conceptName: "Listas Dinámicas & Keys",
+    description: "Itera sobre un arreglo de 7 productos usando .map() dentro de un bucle de renderizado.",
+    story: "¡Bienvenido al Mundo 2! Tienes una lista de ítems provenientes de una API. En React, usamos .map() dentro de un bucle para renderizar cada elemento con su atributo key.",
+    learningObjective: "Array.map() permite transformar arreglos de datos en elementos JSX dinámicos que se renderizan de manera repetitiva.",
+    stepByStepGuide: [
+      "1. Arrastra el bloque '🔁 Repetir X veces'.",
+      "2. Configura el contador en 7 repeticiones de lista.",
+      "3. Coloca dentro un bloque '🚀 Mover adelante'."
+    ],
+    objectives: [
+      { id: 'goal', label: 'Renderizar la lista completa de ítems con .map()' },
+      { id: 'loop_use', label: 'Usar el bloque de Bucle Repetir 🔁' },
+      { id: 'blocks', label: 'Usar sólo 3 bloques para 3 ⭐' }
+    ],
+    gridSize: { width: 10, height: 5 },
+    startPos: { x: 1, y: 2 },
+    startDirection: 'EAST',
+    goalPos: { x: 8, y: 2 },
+    map: [
+      ['WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'GOAL', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'WALL'],
+      ['WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL']
+    ],
+    maxBlocks: 3,
+    availableBlocks: ['move_forward', 'repeat_times'],
+    hint: "Mete '🚀 Mover adelante' DENTRO de '🔁 Repetir 7 veces'."
+  },
+  {
+    id: 306,
+    world: 2,
+    worldTitle: "Mundo 2: Estado Reactivo & Listas",
+    title: "6. Composición de Componentes",
+    conceptName: "Component Trees & Nesting",
+    description: "Renderiza los 3 sub-componentes UI (<Header />, <Body />, <Footer />) en una estructura anidada.",
+    story: "Diseñando la arquitectura del sitio. Cody debe recorrer el árbol de la aplicación inyectando los 3 componentes anidados (cristales) en el render principal.",
+    learningObjective: "La composición de componentes permite dividir UIs complejas en piezas pequeñas, enfocadas y mantenibles.",
+    stepByStepGuide: [
+      "1. Diseña la rutina de 1 escalón: Mover, Girar Izquierda, Mover, Girar Derecha, Recoger.",
+      "2. Encierra esa secuencia en 'Repetir 3 veces'.",
+      "3. Completa el ensamblaje de la interfaz en la meta."
+    ],
+    objectives: [
+      { id: 'collect_comp', label: 'Ensamblar los 3 sub-componentes 💎' },
+      { id: 'goal', label: 'Completar el render del componente Padre' },
+      { id: 'blocks', label: 'Usar máximo 6 bloques' }
+    ],
+    gridSize: { width: 6, height: 6 },
+    startPos: { x: 1, y: 4 },
+    startDirection: 'EAST',
+    goalPos: { x: 4, y: 1 },
+    map: [
+      ['WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'GOAL', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'WALL'],
+      ['WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL']
+    ],
+    items: [
+      { id: 'comp1', x: 2, y: 3, type: 'CRYSTAL' },
+      { id: 'comp2', x: 3, y: 2, type: 'CRYSTAL' },
+      { id: 'comp3', x: 4, y: 1, type: 'CRYSTAL' }
+    ],
+    maxBlocks: 6,
+    availableBlocks: ['move_forward', 'turn_left', 'turn_right', 'collect', 'repeat_times'],
+    hint: "El patrón de 1 escalón es: Mover ➔ Izquierda ➔ Mover ➔ Derecha ➔ Recoger. Repite 3 veces."
+  },
+  {
+    id: 307,
+    world: 3,
+    worldTitle: "Mundo 3: Ciclo de Vida & Context API",
+    title: "7. Efectos Secundarios (useEffect)",
+    conceptName: "Side Effects & Dependencies Array",
+    description: "Ejecuta una llamada de API al montar el componente. Si el efecto detecta desconexión (arroyo), limpia la suscripción.",
+    story: "¡Bienvenido al Mundo 3! El Hook useEffect maneja efectos secundarios como peticiones HTTP y suscripciones. Inspecciona la red con un condicional IF y limpia la suscripción.",
+    learningObjective: "useEffect sincroniza un componente con un sistema externo, manejando el montaje, actualización y limpieza.",
+    stepByStepGuide: [
+      "1. Configura un bucle 'Repetir 5 veces'.",
+      "2. Evalúa dentro: 'Si hay arroyo adelante' -> 'Construir Puente'.",
+      "3. Añade 'Mover adelante' al final de la iteración."
+    ],
+    objectives: [
+      { id: 'if_use', label: 'Usar el bloque condicional IF ❓' },
+      { id: 'goal', label: 'Sincronizar el efecto secundario en la meta' },
+      { id: 'blocks', label: 'Usar máximo 5 bloques' }
+    ],
+    gridSize: { width: 7, height: 5 },
+    startPos: { x: 1, y: 2 },
+    startDirection: 'EAST',
+    goalPos: { x: 5, y: 2 },
+    map: [
+      ['WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'RIVER', 'EMPTY', 'GOAL', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'WALL'],
+      ['WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL']
+    ],
+    maxBlocks: 5,
+    availableBlocks: ['move_forward', 'build_bridge', 'repeat_times', 'if_river'],
+    hint: "Dentro del bucle: evalúa 'Si hay arroyo adelante' construyendo puente, luego avanza siempre un paso."
+  },
+  {
+    id: 308,
+    world: 3,
+    worldTitle: "Mundo 3: Ciclo de Vida & Context API",
+    title: "8. Proveedor de Estado Global (Context API)",
+    conceptName: "Global State & useContext",
+    description: "Evita el Prop Drilling distribuyendo el tema oscuro (<ThemeProvider />) a todos los nodos del árbol.",
+    story: "¡Prop Drilling detectado! Pasar props manualmente por 7 niveles es caótico. Cody debe activar un ContextProvider para inyectar datos globales en cada nodo de la aplicación.",
+    learningObjective: "useContext permite compartir datos globales (como usuario o tema) entre componentes sin pasarlos por las props.",
+    stepByStepGuide: [
+      "1. Repite la inyección 7 veces.",
+      "2. En cada iteración: Si hay agua adelante ➔ Construir puente de contexto.",
+      "3. Avanza siempre una casilla hacia la meta."
+    ],
+    objectives: [
+      { id: 'bridges_all', label: 'Proveer el contexto a todos los componentes' },
+      { id: 'goal', label: 'Consumir el contexto global en la meta' },
+      { id: 'blocks', label: 'Usar máximo 6 bloques' }
+    ],
+    gridSize: { width: 10, height: 5 },
+    startPos: { x: 1, y: 2 },
+    startDirection: 'EAST',
+    goalPos: { x: 8, y: 2 },
+    map: [
+      ['WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'WALL'],
+      ['WALL', 'EMPTY', 'RIVER', 'EMPTY', 'RIVER', 'RIVER', 'EMPTY', 'GOAL', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'WALL'],
+      ['WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL']
+    ],
+    maxBlocks: 6,
+    availableBlocks: ['move_forward', 'build_bridge', 'repeat_times', 'if_river'],
+    hint: "Repite 7 veces: Si hay agua adelante construye puente, luego siempre avanza una casilla."
+  },
+  {
+    id: 309,
+    world: 4,
+    worldTitle: "Mundo 4: Virtual DOM & React Avanzado",
+    title: "9. Optimización de Render (useMemo)",
+    conceptName: "Performance & Memoization",
+    description: "Evita cálculos pesados innecesarios memorizando los 3 valores computados (useMemo) en el pipeline de render.",
+    story: "¡Mundo 4! Tu interfaz se congela debido a operaciones costosas en cada render. Cody debe usar useMemo recolectando únicamente los 3 resultados cacheados (cristales).",
+    learningObjective: "useMemo memoriza el resultado de un cálculo entre renderizados para evitar operaciones lentas innecesarias.",
+    stepByStepGuide: [
+      "1. Planifica la ruta para recoger los 3 valores memorizados.",
+      "2. Recolecta los 3 cristales de cálculo.",
+      "3. Retorna la UI fluidamente a la meta."
+    ],
+    objectives: [
+      { id: 'collect_memo', label: 'Memorizar los 3 cálculos pesados 💎' },
+      { id: 'goal', label: 'Renderizar la UI a 60 FPS en la meta' },
+      { id: 'blocks', label: 'Usar máximo 14 bloques' }
+    ],
+    gridSize: { width: 7, height: 7 },
+    startPos: { x: 1, y: 1 },
+    startDirection: 'SOUTH',
+    goalPos: { x: 5, y: 5 },
+    map: [
+      ['WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL'],
+      ['WALL', 'EMPTY', 'WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'WALL'],
+      ['WALL', 'EMPTY', 'WALL', 'EMPTY', 'WALL', 'EMPTY', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'WALL', 'EMPTY', 'WALL'],
+      ['WALL', 'WALL', 'WALL', 'EMPTY', 'WALL', 'EMPTY', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'GOAL', 'WALL'],
+      ['WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL']
+    ],
+    items: [
+      { id: 'memo1', x: 1, y: 3, type: 'CRYSTAL' },
+      { id: 'memo2', x: 3, y: 3, type: 'CRYSTAL' },
+      { id: 'memo3', x: 5, y: 3, type: 'CRYSTAL' }
+    ],
+    maxBlocks: 14,
+    availableBlocks: ['move_forward', 'turn_left', 'turn_right', 'collect', 'repeat_times', 'if_river'],
+    hint: "Planea tu ruta: Recoge el cristal del primer pasillo, regresa, cruza al centro y luego al pasillo derecho antes de llegar a la meta."
+  },
+  {
+    id: 310,
+    world: 4,
+    worldTitle: "Mundo 4: Virtual DOM & React Avanzado",
+    title: "10. La Gran SPA Reactiva (Single Page App)",
+    conceptName: "Arquitectura Reactiva Profesional",
+    description: "Rescata los 2 componentes de estado global desconectados tras un quiebre de estado y despliega la SPA en Vercel.",
+    story: "¡El Gran Desafío Final de React! Un desborde de re-renders desconectó 2 módulos clave (ovejas/componentes) al otro lado del lago del Virtual DOM. Cody debe construir puentes de estado, rescatar los componentes y desplegar la SPA.",
+    learningObjective: "¡Felicitaciones! Has dominado Componentes, Props, State, Effects, Context, Hooks y Optimización. ¡Eres un Ingeniero Frontend React de nivel Senior!",
+    stepByStepGuide: [
+      "1. Construye el puente de estado sobre el lago del Virtual DOM.",
+      "2. Rescata los 2 componentes de UI 🐑 aislados.",
+      "3. Despliega la app en la meta para graduarte."
+    ],
+    objectives: [
+      { id: 'bridge_vdom', label: 'Construir puente sobre el lago del Virtual DOM' },
+      { id: 'rescue_nodes', label: 'Rescatar los 2 componentes aislados 🐑' },
+      { id: 'goal', label: 'Desplegar la SPA Reactiva en Vercel' },
+      { id: 'blocks', label: 'Usar máximo 16 bloques' }
+    ],
+    gridSize: { width: 8, height: 8 },
+    startPos: { x: 1, y: 6 },
+    startDirection: 'NORTH',
+    goalPos: { x: 6, y: 6 },
+    map: [
+      ['WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'WALL'],
+      ['WALL', 'EMPTY', 'RIVER', 'RIVER', 'RIVER', 'RIVER', 'EMPTY', 'WALL'],
+      ['WALL', 'EMPTY', 'RIVER', 'RIVER', 'RIVER', 'RIVER', 'EMPTY', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'WALL'],
+      ['WALL', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'EMPTY', 'GOAL', 'WALL'],
+      ['WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL', 'WALL']
+    ],
+    items: [
+      { id: 'react1', x: 1, y: 1, type: 'SHEEP' },
+      { id: 'react2', x: 6, y: 1, type: 'SHEEP' }
+    ],
+    maxBlocks: 16,
+    availableBlocks: ['move_forward', 'turn_left', 'turn_right', 'build_bridge', 'collect', 'repeat_times', 'if_river'],
+    hint: "Combina giros, bucles y puentes para cruzar el lago, recolectar ambos componentes de UI y alcanzar la meta final."
+  }
+];
+
 export function getLevelsForTrack(track: TrackType): LevelConfig[] {
   switch (track) {
     case 'javascript':
-    case 'react':
       return JAVASCRIPT_LEVELS;
     case 'django':
       return DJANGO_LEVELS;
+    case 'react':
+      return REACT_LEVELS;
     case 'python':
     default:
       return PYTHON_LEVELS;
