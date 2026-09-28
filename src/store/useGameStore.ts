@@ -71,7 +71,8 @@ const loadProgressFromStorage = (): Record<number, UserLevelProgress> => {
   }
   return {
     1: { levelId: 1, completed: false, stars: 0, bestBlockCount: 0 },
-    101: { levelId: 101, completed: false, stars: 0, bestBlockCount: 0 }
+    101: { levelId: 101, completed: false, stars: 0, bestBlockCount: 0 },
+    201: { levelId: 201, completed: false, stars: 0, bestBlockCount: 0 }
   };
 };
 
