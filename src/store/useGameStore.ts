@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import type { LevelConfig, UserLevelProgress, TrackType } from '../types/game';
-import { LEVELS } from '../data/levels';
+import { LEVELS, getLevelsForTrack } from '../data/levels';
 
 export type ExecutionState = 'IDLE' | 'RUNNING' | 'PAUSED' | 'SUCCESS' | 'FAILED';
 
@@ -70,7 +70,8 @@ const loadProgressFromStorage = (): Record<number, UserLevelProgress> => {
     console.error("Failed to load progress from localStorage", e);
   }
   return {
-    1: { levelId: 1, completed: false, stars: 0, bestBlockCount: 0 }
+    1: { levelId: 1, completed: false, stars: 0, bestBlockCount: 0 },
+    101: { levelId: 101, completed: false, stars: 0, bestBlockCount: 0 }
   };
 };
 
@@ -102,16 +103,26 @@ export const useGameStore = create<GameState>((set, get) => ({
   setCurrentView: (currentView) => set({ currentView }),
   setActiveTrack: (track) => {
     const lang = (track === 'javascript' || track === 'react') ? 'javascript' : 'python';
+    const trackLevels = getLevelsForTrack(track);
+    const firstLevel = trackLevels[0];
     set({
       activeTrack: track,
       currentView: 'game',
       selectedLanguage: lang,
+      currentLevelId: firstLevel.id,
+      currentLevel: firstLevel,
+      executionState: 'IDLE',
+      currentBlockId: null,
+      errorMessage: null,
+      successMessage: null,
+      codeOutput: [],
       isLevelIntroOpen: true
     });
   },
   
   setLevel: (levelId: number) => {
-    const target = LEVELS.find(l => l.id === levelId) || LEVELS[0];
+    const trackLevels = getLevelsForTrack(get().activeTrack);
+    const target = trackLevels.find(l => l.id === levelId) || trackLevels[0];
     set({
       currentLevelId: target.id,
       currentLevel: target,
@@ -126,10 +137,12 @@ export const useGameStore = create<GameState>((set, get) => ({
   },
   
   nextLevel: () => {
-    const { currentLevelId } = get();
-    const nextId = currentLevelId + 1;
-    if (nextId <= LEVELS.length) {
-      get().setLevel(nextId);
+    const { currentLevelId, activeTrack } = get();
+    const trackLevels = getLevelsForTrack(activeTrack);
+    const currentIndex = trackLevels.findIndex(l => l.id === currentLevelId);
+    if (currentIndex !== -1 && currentIndex + 1 < trackLevels.length) {
+      const nextLevelObj = trackLevels[currentIndex + 1];
+      get().setLevel(nextLevelObj.id);
     } else {
       set({ isWorldMapOpen: true, isVictoryModalOpen: false });
     }
@@ -154,28 +167,35 @@ export const useGameStore = create<GameState>((set, get) => ({
   setLevelIntroOpen: (isLevelIntroOpen) => set({ isLevelIntroOpen }),
   
   recordLevelCompletion: (levelId: number, stars: number, blockCount: number) => {
-    const { userProgress } = get();
+    const { userProgress, activeTrack } = get();
     const existing = userProgress[levelId];
     const newStars = existing ? Math.max(existing.stars, stars) : stars;
     const newBest = existing && existing.bestBlockCount > 0 
       ? Math.min(existing.bestBlockCount, blockCount) 
       : blockCount;
       
-    const updatedProgress = {
+    const trackLevels = getLevelsForTrack(activeTrack);
+    const currentIndex = trackLevels.findIndex(l => l.id === levelId);
+    const nextLevelObj = currentIndex !== -1 ? trackLevels[currentIndex + 1] : null;
+
+    const updatedProgress: Record<number, UserLevelProgress> = {
       ...userProgress,
       [levelId]: {
         levelId,
         completed: true,
         stars: newStars,
         bestBlockCount: newBest
-      },
-      [levelId + 1]: userProgress[levelId + 1] || {
-        levelId: levelId + 1,
+      }
+    };
+
+    if (nextLevelObj) {
+      updatedProgress[nextLevelObj.id] = userProgress[nextLevelObj.id] || {
+        levelId: nextLevelObj.id,
         completed: false,
         stars: 0,
         bestBlockCount: 0
-      }
-    };
+      };
+    }
     
     try {
       localStorage.setItem(LOCAL_STORAGE_PROGRESS_KEY, JSON.stringify(updatedProgress));

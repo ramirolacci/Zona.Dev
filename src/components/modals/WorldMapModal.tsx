@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useGameStore } from '../../store/useGameStore';
-import { LEVELS } from '../../data/levels';
+import { getLevelsForTrack } from '../../data/levels';
 import { X, Lock, Star, CheckCircle2 } from 'lucide-react';
 import { GSAPModal } from '../ui/GSAPModal';
 import { TRACK_THEMES } from '../../utils/theme';
@@ -18,6 +18,8 @@ export const WorldMapModal: React.FC = () => {
 
   const theme = TRACK_THEMES[activeTrack] || TRACK_THEMES.python;
   const gridRef = useRef<HTMLDivElement>(null);
+
+  const levels = getLevelsForTrack(activeTrack);
 
   useEffect(() => {
     if (isWorldMapOpen && gridRef.current) {
@@ -60,9 +62,9 @@ export const WorldMapModal: React.FC = () => {
 
         {/* Level List Grid */}
         <div ref={gridRef} className="flex-1 overflow-y-auto py-6 grid grid-cols-1 sm:grid-cols-2 gap-4 pr-1">
-          {LEVELS.map(level => {
+          {levels.map((level, index) => {
             const progress = userProgress[level.id];
-            const isUnlocked = level.id === 1 || !!progress;
+            const isUnlocked = index === 0 || !!progress;
             const isCompleted = progress?.completed;
             const stars = progress?.stars || 0;
             const isCurrent = level.id === currentLevelId;
